@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f3f4f6;
+  --bg-editor: #ffffff;
+  --bg-header: #f9fafb;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --border-color: #e5e7eb;
+  --accent: #3b82f6;
+  --accent-hover: #2563eb;
+  --btn-bg: #f3f4f6;
+  --btn-hover: #e5e7eb;
+  --tab-active: #3b82f6;
+  --tab-inactive: transparent;
+  --preview-bg: #ffffff;
+}
+
+[data-theme="dark"] {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-editor: #1e293b;
+  --bg-header: #0f172a;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --border-color: #334155;
+  --accent: #3b82f6;
+  --accent-hover: #60a5fa;
+  --btn-bg: #334155;
+  --btn-hover: #475569;
+  --tab-active: #3b82f6;
+  --tab-inactive: transparent;
+  --preview-bg: #ffffff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* CodeMirror overrides for theme integration */
+.cm-editor {
+  height: 100% !important;
+  font-size: 14px;
+  background-color: var(--bg-editor) !important;
+}
+
+.cm-editor .cm-gutters {
+  background-color: var(--bg-editor) !important;
+  border-right: 1px solid var(--border-color) !important;
+}
+
+.cm-editor .cm-content {
+  padding: 8px 0 !important;
+}
+
+.cm-editor .cm-line {
+  padding: 0 8px !important;
+}
+
+.cm-editor.cm-focused {
+  outline: none !important;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Resize handle */
+.resize-handle {
+  background-color: var(--border-color);
+  transition: background-color 0.15s ease;
+}
+
+.resize-handle:hover,
+.resize-handle:active {
+  background-color: var(--accent);
+}
