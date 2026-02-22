@@ -11,7 +11,8 @@ interface LivePreviewProps {
 
 /**
  * LivePreview – Renders the combined HTML/CSS/JS output
- * inside a sandboxed iframe with debounced updates.
+ * inside a sandboxed iframe with debounced updates and
+ * a smooth loading indicator.
  */
 export default function LivePreview({ html, css, js }: LivePreviewProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -23,7 +24,6 @@ export default function LivePreview({ html, css, js }: LivePreviewProps) {
       const iframe = iframeRef.current;
       if (!iframe) return;
       const doc = mergeCode(h, c, j);
-      // Use srcdoc for safe, sandboxed rendering
       iframe.srcdoc = doc;
       setIsLoading(false);
     }, 400),
@@ -37,15 +37,36 @@ export default function LivePreview({ html, css, js }: LivePreviewProps) {
 
   return (
     <div className="relative w-full h-full" style={{ backgroundColor: "var(--preview-bg)" }}>
+      {/* Loading bar animation at top of preview */}
       {isLoading && (
-        <div className="absolute top-2 right-2 z-10">
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 2,
+            zIndex: 10,
+            overflow: "hidden",
+            backgroundColor: "var(--border-color)",
+          }}
+        >
           <div
-            className="w-4 h-4 border-2 rounded-full animate-spin"
             style={{
-              borderColor: "var(--border-color)",
-              borderTopColor: "var(--accent)",
+              width: "40%",
+              height: "100%",
+              backgroundColor: "var(--accent)",
+              borderRadius: 2,
+              animation: "loading-bar 1.2s ease-in-out infinite",
             }}
           />
+          <style>{`
+            @keyframes loading-bar {
+              0%   { transform: translateX(-100%); }
+              50%  { transform: translateX(200%); }
+              100% { transform: translateX(-100%); }
+            }
+          `}</style>
         </div>
       )}
       <iframe

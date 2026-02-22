@@ -10,6 +10,7 @@ const TABS: { id: EditorTab; label: string; color: string }[] = [
 
 /**
  * EditorTabs – Tab bar for switching between HTML, CSS, and JS editors.
+ * Uses pill-dot indicators and smooth hover transitions.
  */
 export default function EditorTabs() {
   const activeTab = usePlaygroundStore((s) => s.activeTab);
@@ -17,27 +18,45 @@ export default function EditorTabs() {
 
   return (
     <div
-      className="flex items-center gap-1 px-2 py-1"
-      style={{ backgroundColor: "var(--bg-header)", borderBottom: "1px solid var(--border-color)" }}
+      className="flex items-end gap-0 px-2 pt-1.5 transition-theme"
+      style={{
+        backgroundColor: "var(--bg-secondary)",
+        borderBottom: "1px solid var(--border-color)",
+      }}
+      role="tablist"
     >
-      {TABS.map((tab) => (
-        <button
-          key={tab.id}
-          onClick={() => setActiveTab(tab.id)}
-          className="relative px-4 py-1.5 text-sm font-medium rounded-t-md transition-colors duration-150"
-          style={{
-            backgroundColor: activeTab === tab.id ? "var(--bg-editor)" : "transparent",
-            color: activeTab === tab.id ? "var(--text-primary)" : "var(--text-secondary)",
-            borderBottom: activeTab === tab.id ? `2px solid ${tab.color}` : "2px solid transparent",
-          }}
-        >
-          <span
-            className="inline-block w-2 h-2 rounded-full mr-1.5"
-            style={{ backgroundColor: tab.color }}
-          />
-          {tab.label}
-        </button>
-      ))}
+      {TABS.map((tab) => {
+        const isActive = activeTab === tab.id;
+        return (
+          <button
+            key={tab.id}
+            role="tab"
+            aria-selected={isActive}
+            onClick={() => setActiveTab(tab.id)}
+            className={`editor-tab ${isActive ? "active" : ""}`}
+            style={{
+              // Active tab bottom border uses the language color
+              ...(isActive ? { "--tab-accent": tab.color } as React.CSSProperties : {}),
+            }}
+          >
+            <span className="tab-dot" style={{ backgroundColor: tab.color }} />
+            {tab.label}
+            {isActive && (
+              <span
+                style={{
+                  position: "absolute",
+                  bottom: 0,
+                  left: "0.5rem",
+                  right: "0.5rem",
+                  height: 2,
+                  borderRadius: "2px 2px 0 0",
+                  backgroundColor: tab.color,
+                }}
+              />
+            )}
+          </button>
+        );
+      })}
     </div>
   );
 }
